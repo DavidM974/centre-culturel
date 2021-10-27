@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="jumbotrun text-center">
+        <h1>Liste des ordinateurs </h1>
+    </div>
+
+
+    <div class="container">
+        <h2>test blabla</h2>
+        <div class="row flex">
+            {% for computer in computers %}
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">
+                                {{ computer.label }}
+                            </h5>
+                            <div class="card-text" style="font-weight: bold;">Processeur : {{ computer.processor }}</div>
+                            <div class="text-primary" style="font-weight: bold;">Carte graphique : {{ computer.graphicCard }}</div>
+                            <div class="text-success" style="font-weight: bold;">Stockage : {{ computer.capacity }} Gb</div>
+                            <div class="text-warning" style="font-weight: bold;">RAM : {{ computer.ram }} Gb</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

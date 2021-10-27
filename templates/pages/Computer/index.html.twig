@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title 'Gestion des ordinateurs' %}
+{% block body %}
+
+    <div class="container mt-4">
+        <h1></h1>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for computer in computers %}
+                <tr>
+                    <td>{{ computer.label }}</td>
+                    <td>
+                        <a href="{{ path('admin.computer.edit', {id:computer.id}) }}" class="btn btn-default">Editer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}
