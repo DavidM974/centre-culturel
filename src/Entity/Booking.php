@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
+use DateTime;
+use DateInterval;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,6 +50,15 @@ class Booking
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $comment;
+
+    public function __construct()
+    {
+        $this->startDate = new \DateTime();
+        $dt = new DateTime();
+        $dt->add(new DateInterval('PT1H')); // add 1 hour for the default hour
+        $this->endDate = $dt;
+
+    }
 
     public function getId(): ?int
     {

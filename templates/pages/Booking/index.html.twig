@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title 'Historique des reservations' %}
+{% block body %}
+
+    <div class="container mt-4">
+        <h1>Historique des reservations</h1>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Ordinateur</th>
+                <th>Utilisateur</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.computer.label }}</td>
+                    <td>{{ booking.user.firstname }} {{ booking.user.lastname | upper}} </td>
+                    <td>{{ booking.startDate |date('d-m-Y h:m') }}</td>
+                    <td>{{ booking.endDate | date('d-m-Y h:m') }}</td>
+                    <td>
+                        <a href="{{ path('booking.edit', {id:booking.id}) }}" class="btn btn-success">Editer</a>
+                        <form method="post" action="{{ path('booking.delete', {id:booking.id} ) }}" style="display: inline-block"
+                              onsubmit="return confirm('Êtes vous vraiment sûr de vouloir supprimer cet utilisateur?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~ booking.id) }}">
+                            <button class="btn btn-danger"> SUPPRIMER</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <a href="{{ path('booking.create') }}" class="btn btn-primary"> Ajouter une reservation</a>
+        </div>
+    </div>
+{% endblock %}

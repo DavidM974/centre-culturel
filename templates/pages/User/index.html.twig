@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title 'Gestion des ordinateurs' %}
+{% block title 'Gestion des utilisateurs' %}
 {% block body %}
 
     <div class="container mt-4">
@@ -11,19 +11,21 @@
             <thead>
             <tr>
                 <th>Nom</th>
+                <th>Prénom</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            {% for computer in computers %}
+            {% for user in users %}
                 <tr>
-                    <td>{{ computer.label }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
                     <td>
-                        <a href="{{ path('computer.edit', {id:computer.id}) }}" class="btn btn-success">Editer</a>
-                        <form method="post" action="{{ path('computer.delete', {id:computer.id} ) }}" style="display: inline-block"
-                              onsubmit="return confirm('Êtes vous vraiment sûr de vouloir supprimer cet ordinateur?')">
+                        <a href="{{ path('user.edit', {id:user.id}) }}" class="btn btn-success">Editer</a>
+                        <form method="post" action="{{ path('user.delete', {id:user.id} ) }}" style="display: inline-block"
+                              onsubmit="return confirm('Êtes vous vraiment sûr de vouloir supprimer cet utilisateur?')">
                             <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~ computer.id) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~ user.id) }}">
                             <button class="btn btn-danger"> SUPPRIMER</button>
                         </form>
                     </td>
@@ -33,7 +35,7 @@
         </table>
 
         <div class="text-right">
-            <a href="{{ path('computer.create') }}" class="btn btn-primary"> Ajouter un ordinateur</a>
+            <a href="{{ path('user.create') }}" class="btn btn-primary"> Ajouter un utilisateur</a>
         </div>
     </div>
 {% endblock %}
