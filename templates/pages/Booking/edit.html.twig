@@ -1,9 +1,17 @@
 {% extends 'base.html.twig' %}
 {% block title 'Edition DES RESERVATIONS' %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+        {% endblock %}
+
 {% block body %}
 
     <div class="container mt-4">
         <h1>Edition des reservations</h1>
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
         {{ form_start(form) }}
         {{ form_widget(form) }}
         <button class="btn btn-primary">Editer</button>
@@ -11,4 +19,27 @@
 
 
     </div>
+
 {% endblock %}
+  {% block javascripts %}
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+      <script>
+          jQuery(document).ready(function (){
+             $('.js-datepicker').datetimepicker({
+                 format: 'DD/MM/YYYY H:mm'
+             });
+              $('.js-datepicker2').datetimepicker({
+                  format: 'DD/MM/YYYY H:mm'
+              });
+              $(".js-datepicker").on("dp.change", function (e) {
+                  $('.js-datepicker2').data("DateTimePicker").minDate(e.date);
+              });
+              $(".js-datepicker2").on("dp.change", function (e) {
+                  $('.js-datepicker').data("DateTimePicker").maxDate(e.date);
+              });
+          });
+      </script>
+  {% endblock %}

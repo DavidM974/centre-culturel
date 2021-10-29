@@ -21,8 +21,8 @@
                 <tr>
                     <td>{{ booking.computer.label }}</td>
                     <td>{{ booking.user.firstname }} {{ booking.user.lastname | upper}} </td>
-                    <td>{{ booking.startDate |date('d-m-Y h:m') }}</td>
-                    <td>{{ booking.endDate | date('d-m-Y h:m') }}</td>
+                    <td>{{ booking.startDate |date('d-m-Y H:i') }}</td>
+                    <td>{{ booking.endDate | date('d-m-Y H:i') }}</td>
                     <td>
                         <a href="{{ path('booking.edit', {id:booking.id}) }}" class="btn btn-success">Editer</a>
                         <form method="post" action="{{ path('booking.delete', {id:booking.id} ) }}" style="display: inline-block"

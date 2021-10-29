@@ -3,15 +3,26 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
-use DateTime;
-use DateInterval;
+use App\Validator\AvailableBooking;
 use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookingRepository::class)
  */
 class Booking
 {
+    //tableau qui reprenste les creanau d'ouverture
+    CONST TIMESLOT_ARRAY= array(
+        '0' => array('08:00','16:00'),
+        '1' => array('08:00','16:00'),
+        '2' => array('08:00','16:00'),
+        '3' => array('08:00','12:00'),
+        '4' => array('08:00','16:00'),
+        '5' => array('08:00','16:00'),
+        '6' => false,
+        );
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -22,6 +33,7 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      */
+
     private $startDate;
 
     /**
@@ -53,10 +65,6 @@ class Booking
 
     public function __construct()
     {
-        $this->startDate = new \DateTime();
-        $dt = new DateTime();
-        $dt->add(new DateInterval('PT1H')); // add 1 hour for the default hour
-        $this->endDate = $dt;
 
     }
 
@@ -64,6 +72,8 @@ class Booking
     {
         return $this->id;
     }
+
+
 
     public function getStartDate(): ?\DateTimeInterface
     {
@@ -135,5 +145,29 @@ class Booking
         $this->comment = $comment;
 
         return $this;
+    }
+//
+    public function isTimeSlotValid(): bool
+    {
+                                                                                                                                                                                          //
+        $day = $this->startDate->format('w');
+        $timeSlot = self::TIMESLOT_ARRAY[$day];
+        if (!$timeSlot){
+            return false;
+        } else {
+            if($this->startDate->format('H:i') >= $timeSlot[0] &
+                $this->endDate->format('H:i') <= $timeSlot[1])
+                return true;
+            else
+                return false;
+        }
+    }
+
+    public function initStartAndEndDate(){
+        $this->startDate = new \DateTime();
+        $dt = new \DateTime();
+        $dt->add(new \DateInterval('PT1H')); // add 1 hour for the default hour
+        $this->endDate = $dt;
+
     }
 }

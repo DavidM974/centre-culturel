@@ -19,22 +19,27 @@ class BookingRepository extends ServiceEntityRepository
         parent::__construct($registry, Booking::class);
     }
 
-    // /**
-    //  * @return Booking[] Returns an array of Booking objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+
+    public function findExistingBooking(Booking $booking)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->Where('b.Computer = :val')
+            ->setParameter('val', $booking->getComputer())
+            ->andWhere('b.id != :id')
+            ->setParameter('id', $booking->getId())
+            ->andwhere('YEAR(b.startDate) = :year')
+            ->setParameter('year', $booking->getStartDate()->format('Y'))
+            ->andWhere('MONTH(b.startDate) = :month')
+            ->setParameter('month', $booking->getStartDate()->format('m'))
+            ->andWhere('DAY(b.startDate) = :day')
+            ->setParameter('day', $booking->getStartDate()->format('d'))
             ->getQuery()
             ->getResult()
         ;
+
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Booking
