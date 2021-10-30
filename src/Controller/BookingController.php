@@ -31,6 +31,20 @@ class BookingController extends AbstractController
     }
 
     /**
+     * @Route ("/prebooking", name="booking.pre")
+     * @param BookingRepository $repository
+     * @return Response
+     */
+    public function preBooking(BookingRepository $repository):Response
+    {
+
+        return $this->render('pages/User/preBooking.html.twig',[
+            'current_menu' => 'booking',
+        ]);
+
+    }
+
+    /**
      * @Route ("/booking/create", name="booking.create")
      * @param Request $request
      * @return Response
@@ -52,7 +66,9 @@ class BookingController extends AbstractController
         return $this->render('pages/booking/new.html.twig', [
             'booking'=> $booking,
             'form'=> $form->createView(),
-            'current_menu' => 'booking']);
+            'current_menu' => 'booking',
+            'hourly' => Booking::TIMESLOT_ARRAY,
+            'week' => Booking::WEEKDAY]);
     }
 
     /**
@@ -74,7 +90,9 @@ class BookingController extends AbstractController
         return $this->render('pages/Booking/edit.html.twig', [
             'booking'=> $booking,
             'form'=> $form->createView(),
-            'current_menu' => 'booking']);
+            'current_menu' => 'booking',
+            'hourly' => Booking::TIMESLOT_ARRAY,
+            'week' => Booking::WEEKDAY]);
     }
 
     public function isBookingValid(BookingRepository $repository, Booking $booking)
@@ -133,8 +151,10 @@ class BookingController extends AbstractController
             $em->remove($booking);
             $em->flush();
             $this->addFlash('success','Reservation supprimé avec succès !');
-            return $this->redirectToRoute('booking.index',
-                ['current_menu' => 'booking']);
+            if ( $request->get('_redirect') == 'DASHBOARD')
+                return $this->redirectToRoute('dashboard',['current_menu' => 'dashboard']);
+            else
+                return $this->redirectToRoute('booking.index',['current_menu' => 'booking']);
         }
 
         return $this->redirectToRoute('booking.index',

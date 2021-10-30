@@ -15,7 +15,7 @@ class Booking
 {
     //tableau qui reprenste les creanau d'ouverture
     CONST TIMESLOT_ARRAY= array(
-        '0' => array('08:00','16:00'),
+        '0' => false,
         '1' => array('08:00','16:00'),
         '2' => array('08:00','16:00'),
         '3' => array('08:00','12:00'),
@@ -23,6 +23,7 @@ class Booking
         '5' => array('08:00','16:00'),
         '6' => false,
         );
+    CONST WEEKDAY= array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi","Vendredi","Samedi");
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

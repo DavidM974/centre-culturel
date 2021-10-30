@@ -1,4 +1,64 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h1>Bienvenue sur l'administration</h1>
+    <div class="col-lg-6 col-md-12 mx-auto text-center">
+
+        <p><h1>Administration</h1></p>
+    </div>
+    <div class="row">
+
+
+            <div class="col-sm-6 col-md-4 col-xl-4 mb-3">
+                <div class="card text-white bg-secondary mb-3 mx-auto" style="max-width: 25rem;">
+                        <div class="card-body mx-auto">
+                        <h5 class="card-title text-center">
+                            Gestion des Utilisateurs
+                        </h5>
+                        <div class="align-middle text-center">
+                            <img src="{{  asset('build/images/groupuser-icon.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="70%">
+                            <form action="{{ path('user.index') }}">
+                                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Gérer" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        <div class="col-sm-6 col-md-4 col-xl-4 mb-3  ">
+            <div class="card text-white bg-secondary mb-3  mx-auto" style="max-width: 25rem;">
+                <div class="card-body mx-auto">
+                    <h5 class="card-title text-center">
+                        Gestion des Ordinateurs
+                    </h5>
+                    <div class="align-middle text-center">
+                        <img src="{{  asset('build/images/computer-normal.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="45%">
+                        <form action="{{ path('computer.index') }}">
+                            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Gérer" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-4 mb-3">
+            <div class="card text-white bg-secondary mb-3 mx-auto" style="max-width: 25rem;">
+                <div class="card-body mx-auto">
+                    <h5 class="card-title text-center">
+                        Gestion des Reservations
+                    </h5>
+                    <div class="align-middle text-center">
+                        <img src="{{  asset('build/images/calend-icon.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="40%">
+                            <form action="{{ path('booking.pre') }}">
+                                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Gérer" />
+                            </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
 {% endblock %}

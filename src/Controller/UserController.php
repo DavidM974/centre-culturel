@@ -31,6 +31,20 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route ("/users/admin", name="user.admin")
+     * @return Response
+     */
+    public function admin():Response
+    {
+        return $this->render('pages/User/admin.html.twig',[
+            'current_menu' => 'user'
+        ]);
+
+    }
+
+
+
+    /**
      * @Route ("/user/create", name="user.create")
      * @param Request $request
      * @return Response
@@ -47,6 +61,30 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('user.index');
+        }
+        return $this->render('pages/User/new.html.twig', [
+            'user'=> $user,
+            'form'=> $form->createView(),
+            'current_menu' => 'user']);
+    }
+
+    /**
+     * @Route ("/user/createredirect", name="user.create.redirect")
+     * @param Request $request
+     * @return Response
+     */
+    public function newRedirect(Request $request) : Response
+    {
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $this->addFlash('success','Utilisateur crée avec succès !');
+            $entityManager->flush();
+
+            return $this->redirectToRoute('booking.create');
         }
         return $this->render('pages/User/new.html.twig', [
             'user'=> $user,

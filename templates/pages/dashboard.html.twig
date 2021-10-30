@@ -1,4 +1,60 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h1>Bienvenue sur le dashboard</h1>
+
+
+        <div class="col-lg-6 mx-auto">
+            <div class="d-grid gap-4 d-sm-flex justify-content-sm-center text-end">
+                <form action="{{ path('booking.pre') }}">
+                    <input type="submit" class="btn btn-primary btn-lg btn-block" value="Attribuer un Ordinateur" />
+                </form>
+            </div>
+            <p>&nbsp;</p>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+        <div class="row">
+        {% for computer in computers %}
+
+            <div class="col-sm-6 col-md-4 col-xl-4 mb-3">
+                <div class="card mx-auto">
+                    <div class="card-body mx-auto align-middle">
+                        <h5 class="card-title text-center">
+                            {{ computer.label }}
+                        </h5>
+                        {% set resa = 0 %}
+                        {% for booking in bookings %}
+                            {% if booking.Computer.id == computer.id %}
+                        <div class="align-middle"><img src="{{  asset('build/images/computer-busy.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="70%"></div>
+                        <div class="align-middle text-center">
+                            <h3>Utilisateur : {{ booking.User.firstname }} {{ booking.User.lastname | upper }}</h3>
+                                <form method="post" action="{{ path('booking.delete', {id:booking.id} ) }}" style="display: inline-block"
+                                      onsubmit="return confirm('Êtes vous vraiment sûr de vouloir supprimer cette reservation ?')">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_redirect" value="DASHBOARD">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete'~ booking.id) }}">
+                                    <button class="btn btn-danger align-middle"> ANNULER</button>
+                                </form>
+                        </div>
+                                {% set resa = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if resa == 0 %}
+                            <div class="align-middle"><img src="{{  asset('build/images/computer-normal.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="70%"></div>
+                        {% endif %}
+                        <div class="card-text" style="font-weight: bold;">Processeur : {{ computer.processor }}</div>
+                        <div class="text-primary" style="font-weight: bold;">Carte graphique : {{ computer.graphicCard }}</div>
+                        <div class="text-success" style="font-weight: bold;">Stockage : {{ computer.capacity }} Gb</div>
+                        <div class="text-warning" style="font-weight: bold;">RAM : {{ computer.ram }} Gb</div>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+
+        </div>
+
+
+
 {% endblock %}

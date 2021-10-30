@@ -40,6 +40,37 @@ class BookingRepository extends ServiceEntityRepository
 
     }
 
+    public function findCurrentBooking()
+    {
+        $dtNow = new \DateTime();
+        $dtNow->setTimezone(new \DateTimeZone('GMT+4'));
+
+        // Je récupère toutes les reservation dont la date de fin et situé dans l'heure
+        $res = $this->createQueryBuilder('b')
+            ->Where('YEAR(b.startDate) = :year')
+            ->setParameter('year',$dtNow->format('Y'))
+            ->andWhere('MONTH(b.startDate) = :month')
+            ->setParameter('month', $dtNow->format('m'))
+            ->andWhere('DAY(b.startDate) = :day')
+            ->setParameter('day', $dtNow->format('d'))
+            ->andWhere('HOUR(b.endDate) >= :hour')
+            ->setParameter('hour', $dtNow->format('H'))
+            ->getQuery()
+            ->getResult()
+            ;
+        // Je supprimer les reservation qui ne sont pas encore commencé dans l'heure et celle qui sont terminées
+        foreach ($res as $key => $booking)
+            {
+                if (($booking->getStartDate()->format('H') == $dtNow->format('H') &&
+                    $booking->getStartDate()->format('i') > $dtNow->format('i')) OR
+                    ($booking->getEndDate()->format('H') == $dtNow->format('H') &&
+                        $booking->getEndDate()->format('i') < $dtNow->format('i'))){
+                    unset($res[$key]);
+                }
+            }
+        return $res;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Booking

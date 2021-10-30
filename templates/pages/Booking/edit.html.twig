@@ -6,18 +6,56 @@
         {% endblock %}
 
 {% block body %}
+    <div class="container ">
 
-    <div class="container mt-4">
-        <h1>Edition des reservations</h1>
+        <div class="col-lg-12 text-center mx-auto">
+            <h1>Edition d'une reservation</h1>
+            <p>&nbsp;</p>
+        </div>
         {% for message in app.flashes('error') %}
             <div class="alert alert-danger">{{ message }}</div>
         {% endfor %}
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">Editer</button>
-        {{ form_end(form) }}
+        <div class="col-lg-6 mx-auto">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary">Créer</button>
+            {{ form_end(form) }}
+        </div>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4"> Horaire d'ouverture du centre culturel</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <table class="table table-success table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Jour</th>
+                        <th scope="col">Ouverture</th>
+                        <th scope="col">Fermeture</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 0 %}
+                    {% for i in 0..6 %}
+                        <tr>
+                            {% if i == 0 or i == 6 %}
+                                <th scope="row">{{ i }}</th>
+                                <td>{{ week[i] }}</td>
+                                <td> Fermé </td>
+                                <td> Fermé </td>
+                            {% else %}
+                                <th scope="row">{{ i }}</th>
+                                <td>{{ week[i] }}</td>
+                                <td>{{ hourly[i][0] }}</td>
+                                <td>{{ hourly[i][1] }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
 
+                    </tbody>
 
+                </table>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
