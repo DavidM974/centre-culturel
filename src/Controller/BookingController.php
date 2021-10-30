@@ -15,7 +15,7 @@ class BookingController extends AbstractController
 
 
     /**
-     * @Route ("/bookings", name="booking.index")
+     * @Route ("/admin/bookings", name="booking.index")
      * @param BookingRepository $repository
      * @return Response
      */
@@ -31,7 +31,7 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route ("/prebooking", name="booking.pre")
+     * @Route ("/admin/prebooking", name="booking.pre")
      * @param BookingRepository $repository
      * @return Response
      */
@@ -45,7 +45,7 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route ("/booking/create", name="booking.create")
+     * @Route ("/admin/booking/create", name="booking.create")
      * @param Request $request
      * @return Response
      */
@@ -72,7 +72,7 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route ("/booking/{id}", name="booking.edit")
+     * @Route ("/admin/booking/{id}", name="booking.edit")
      * @param BookingRepository $repository
      * @param Booking $booking
      * @param Request $request
@@ -139,7 +139,7 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route ("/booking/delete/{id}", name="booking.delete")
+     * @Route ("/admin/booking/delete/{id}", name="booking.delete")
      * @param Booking $booking
      * @return Response
      */

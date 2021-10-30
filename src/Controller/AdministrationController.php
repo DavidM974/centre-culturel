@@ -12,7 +12,7 @@ class AdministrationController extends AbstractController
 {
 
     /**
-     * @Route ("/", name="dashboard")
+     * @Route ("/admin", name="dashboard")
      * @param ComputerRepository $repository
      * @return Response
      */
@@ -29,7 +29,7 @@ class AdministrationController extends AbstractController
 
     }
     /**
-     * @Route ("/admin", name="administration")
+     * @Route ("/admin/index", name="administration")
      * @return Response
      */
     public function admin():Response
@@ -41,7 +41,7 @@ class AdministrationController extends AbstractController
 
     }
     /**
-     * @Route ("/showbooking", name="showbooking")
+     * @Route ("/admin/showbooking", name="showbooking")
      * @param ComputerRepository $repository
      * @return Response
      */

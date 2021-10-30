@@ -15,7 +15,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route ("/users", name="user.index")
+     * @Route ("/admin/users", name="user.index")
      * @param UserRepository $repository
      * @return Response
      */
@@ -31,7 +31,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route ("/users/admin", name="user.admin")
+     * @Route ("/admin/users/admin", name="user.admin")
      * @return Response
      */
     public function admin():Response
@@ -45,7 +45,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route ("/user/create", name="user.create")
+     * @Route ("/admin/user/create", name="user.create")
      * @param Request $request
      * @return Response
      */
@@ -69,7 +69,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route ("/user/createredirect", name="user.create.redirect")
+     * @Route ("/admin/user/createredirect", name="user.create.redirect")
      * @param Request $request
      * @return Response
      */
@@ -93,7 +93,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route ("/user/{id}", name="user.edit")
+     * @Route ("/admin/user/{id}", name="user.edit")
      * @param User $user
      * @param Request $request
      * @return Response
@@ -114,7 +114,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route ("/user/delete/{id}", name="user.delete")
+     * @Route ("/admin/user/delete/{id}", name="user.delete")
      * @param User $user
      * @return Response
      */

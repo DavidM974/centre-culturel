@@ -27,6 +27,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% if is_granted('ROLE_ADMIN') %}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link {% if current_menu is defined  and current_menu == 'dashboard' %}active{% endif %}" aria-current="page" href="{{ path('dashboard') }}">Dashboard</a>
@@ -46,6 +47,8 @@
 
                 </ul>
 
+                        <a class="ms-auto link-light active" href="{{ path('app_logout') }}">Deconnexion</a>
+                {% endif %}
             </div>
         </div>
     </nav>

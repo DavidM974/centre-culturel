@@ -17,7 +17,7 @@ class ComputerController extends AbstractController
 
 
     /**
-     * @Route ("/computers", name="computer.index")
+     * @Route ("/admin/computers", name="computer.index")
      * @param ComputerRepository $repository
      * @return Response
      */
@@ -31,7 +31,7 @@ class ComputerController extends AbstractController
     }
 
     /**
-     * @Route ("/computer/create", name="computer.create")
+     * @Route ("/admin/computer/create", name="computer.create")
      * @param Request $request
      * @return Response
      */
@@ -55,7 +55,7 @@ class ComputerController extends AbstractController
     }
 
     /**
-     * @Route ("/computers/{id}", name="computer.edit")
+     * @Route ("/admin/computers/{id}", name="computer.edit")
      * @param Computer $computer
      * @param Request $request
      * @return Response
@@ -77,7 +77,7 @@ class ComputerController extends AbstractController
     }
 
     /**
-     * @Route ("/computers/delete/{id}", name="computer.delete")
+     * @Route ("/admin/computers/delete/{id}", name="computer.delete")
      * @param Computer $computer
      * @return Response
      */
