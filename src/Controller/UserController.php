@@ -124,7 +124,7 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
-            $this->addFlash('success','Ordinateur supprimé avec succès !');
+            $this->addFlash('success','Utilisateur supprimé avec succès !');
             return $this->redirectToRoute('user.index',
                 ['current_menu' => 'user']);
         }

@@ -30,7 +30,6 @@ class BookingType extends AbstractType
                 'html5' => false,
                 'format'=>'dd/MM/yyyy H:mm'
             ])
-            ->add('Cancel')
             ->add('comment')
             ->add('User')
             ->add('Computer')

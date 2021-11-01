@@ -5,11 +5,14 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity("email")
  */
 class User
 {
@@ -39,6 +42,12 @@ class User
      * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="User")
      */
     private $bookings;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
+     */
+    private $email;
 
     public function __construct()
     {
@@ -115,6 +124,18 @@ class User
                 $booking->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
