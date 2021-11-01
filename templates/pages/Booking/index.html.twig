@@ -7,6 +7,9 @@
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">{{ message }}</div>
         {% endfor %}
+        <div class="align-right">
+            <a href="{{ path('booking.index') }}" class="btn btn-primary"> Toutes les reservations</a>&nbsp;&nbsp;<a href="{{ path('booking.day') }}" class="btn btn-success"> Reservations du jour</a>
+        </div>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -38,7 +41,7 @@
         </table>
 
         <div class="text-right">
-            <a href="{{ path('booking.create') }}" class="btn btn-primary"> Ajouter une reservation</a>
+            <a href="{{ path('booking.pre') }}" class="btn btn-primary"> Ajouter une reservation</a>
         </div>
     </div>
 {% endblock %}

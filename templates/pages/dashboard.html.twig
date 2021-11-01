@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
-
-        <div class="col-lg-6 mx-auto">
-            <div class="d-grid gap-4 d-sm-flex justify-content-sm-center text-end">
+<div class="col-xl-12 mx-auto text-center">
+   <h2>   Reservation du jour   </h2>
+</div>
+            <div class="col-xl-12 mx-auto">
                 <form action="{{ path('booking.pre') }}">
                     <input type="submit" class="btn btn-primary btn-lg btn-block" value="Attribuer un Ordinateur" />
                 </form>
@@ -12,11 +13,11 @@
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success">{{ message }}</div>
             {% endfor %}
-        </div>
+
         <div class="row">
         {% for computer in computers %}
 
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-3">
+            <div class="col-sm-6 col-md-4 col-xl-4 mb-3">
                 <div class="card mx-auto">
                     <div class="card-body mx-auto align-middle">
                         <h5 class="card-title text-center">
@@ -25,22 +26,35 @@
                         {% set resa = 0 %}
                         {% for booking in bookings %}
                             {% if booking.Computer.id == computer.id %}
-                        <div class="align-middle"><img src="{{  asset('build/images/computer-busy.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="70%"></div>
-                        <div class="align-middle text-center">
-                            <h3>Utilisateur : {{ booking.User.firstname }} {{ booking.User.lastname | upper }}</h3>
-                                <form method="post" action="{{ path('booking.delete', {id:booking.id} ) }}" style="display: inline-block"
-                                      onsubmit="return confirm('Êtes vous vraiment sûr de vouloir supprimer cette reservation ?')">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" name="_redirect" value="DASHBOARD">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete'~ booking.id) }}">
-                                    <button class="btn btn-danger align-middle"> ANNULER</button>
-                                </form>
+                        <div class="align-middle">
+                            <table class="table">
+                                <tr>
+                                    <td><img src="{{  asset('build/images/computer-busy.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="79px"></td>
+                                    <td>  {{ booking.User.firstname }} {{ booking.User.lastname | upper }}</td>
+                                    <td> {{ booking.startDate | date('H:i') }} -  {{ booking.endDate |  date('H:i') }}</td>
+                                    <td> <form method="post" action="{{ path('booking.delete', {id:booking.id} ) }}" style="display: inline-block"
+                                               onsubmit="return confirm('Êtes vous vraiment sûr de vouloir supprimer cette reservation ?')">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_redirect" value="DASHBOARD">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~ booking.id) }}">
+                                            <button class="btn btn-danger align-middle"> ANNULER</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                                 {% set resa = 1 %}
                             {% endif %}
                         {% endfor %}
                         {% if resa == 0 %}
-                            <div class="align-middle"><img src="{{  asset('build/images/computer-normal.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="70%"></div>
+                            <div class="align-middle">
+                                <table class="table">
+                                    <tr>
+                                        <td><img src="{{  asset('build/images/computer-normal.png') }}" class="d-block mx-auto mb-4" alt="pc-normal" width="79px"></td>
+                                        <td> Pas de reservation </td>
+                                    </tr>
+                                </table>
+                            </div>
                         {% endif %}
                         <div class="card-text" style="font-weight: bold;">Processeur : {{ computer.processor }}</div>
                         <div class="text-primary" style="font-weight: bold;">Carte graphique : {{ computer.graphicCard }}</div>

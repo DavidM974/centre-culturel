@@ -21,29 +21,27 @@ class BookingRepository extends ServiceEntityRepository
 
 
 
-    public function findExistingBooking(Booking $booking)
+    public function findExistingBooking(Booking $booking, $edit)
     {
-        return $this->createQueryBuilder('b')
-            ->Where('b.Computer = :val')
-            ->setParameter('val', $booking->getComputer())
-            ->andWhere('b.id != :id')
-            ->setParameter('id', $booking->getId())
-            ->andwhere('YEAR(b.startDate) = :year')
+         $qb = $this->createQueryBuilder('b');
+         $qb->Where('b.Computer = :val')
+            ->setParameter('val', $booking->getComputer());
+        if ($edit)
+            $qb->andWhere('b.id != :id')
+                ->setParameter('id', $booking->getId());
+        $qb->andwhere('YEAR(b.startDate) = :year')
             ->setParameter('year', $booking->getStartDate()->format('Y'))
             ->andWhere('MONTH(b.startDate) = :month')
             ->setParameter('month', $booking->getStartDate()->format('m'))
             ->andWhere('DAY(b.startDate) = :day')
-            ->setParameter('day', $booking->getStartDate()->format('d'))
-            ->getQuery()
-            ->getResult()
-        ;
-
+            ->setParameter('day', $booking->getStartDate()->format('d'));
+       return $qb->getQuery()
+            ->getResult();
     }
 
     public function findCurrentBooking()
     {
         $dtNow = new \DateTime();
-        $dtNow->setTimezone(new \DateTimeZone('GMT+4'));
 
         // Je récupère toutes les reservation dont la date de fin et situé dans l'heure
         $res = $this->createQueryBuilder('b')
@@ -55,6 +53,7 @@ class BookingRepository extends ServiceEntityRepository
             ->setParameter('day', $dtNow->format('d'))
             ->andWhere('HOUR(b.endDate) >= :hour')
             ->setParameter('hour', $dtNow->format('H'))
+            ->orderBy('b.startDate', 'ASC')
             ->getQuery()
             ->getResult()
             ;
@@ -72,15 +71,41 @@ class BookingRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?Booking
+    public function findBookingOfTheDay()
+    {
+        $dtNow = new \DateTime();
+
+        // Je récupère toutes les reservation dont la date de fin et situé dans l'heure
+        return  $this->createQueryBuilder('b')
+            ->Where('YEAR(b.startDate) = :year')
+            ->setParameter('year', $dtNow->format('Y'))
+            ->andWhere('MONTH(b.startDate) = :month')
+            ->setParameter('month', $dtNow->format('m'))
+            ->andWhere('DAY(b.startDate) = :day')
+            ->setParameter('day', $dtNow->format('d'))
+            ->orderBy('b.startDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findDesc()
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
+
+            ->orderBy('b.startDate', 'DESC')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
+
+    public function findAsc()
+    {
+        return $this->createQueryBuilder('b')
+
+            ->orderBy('b.startDate', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

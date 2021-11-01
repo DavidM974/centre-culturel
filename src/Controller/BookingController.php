@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,23 @@ class BookingController extends AbstractController
     public function index(BookingRepository $repository):Response
     {
 
-        $bookings = $repository->findAll();
+        $bookings = $repository->findAsc();
+        return $this->render('pages/Booking/index.html.twig',[
+            'current_menu' => 'booking',
+            'bookings' =>$bookings
+        ]);
+
+    }
+
+    /**
+     * @Route ("/admin/bookings/day", name="booking.day")
+     * @param BookingRepository $repository
+     * @return Response
+     */
+    public function dayBooking(BookingRepository $repository):Response
+    {
+
+        $bookings = $repository->findBookingOfTheDay();
         return $this->render('pages/Booking/index.html.twig',[
             'current_menu' => 'booking',
             'bookings' =>$bookings
@@ -55,7 +72,7 @@ class BookingController extends AbstractController
         $booking->initStartAndEndDate();
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
-        if ($form->isSubmitted() and $form->isValid() and $this->isBookingValid($repository, $booking)){
+        if ($form->isSubmitted() and $form->isValid() and $this->isBookingValid($repository, $booking, false)){
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
             $this->addFlash('success','Reservation crée avec succès !');
@@ -81,7 +98,7 @@ class BookingController extends AbstractController
     public function edit(BookingRepository $repository, Booking $booking, Request $request){
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
-        if ($form->isSubmitted() and $form->isValid() and $this->isBookingValid($repository, $booking)){
+        if ($form->isSubmitted() and $form->isValid() and $this->isBookingValid($repository, $booking, true)){
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('success','Votre modification à bien été enregistré !');
@@ -95,7 +112,7 @@ class BookingController extends AbstractController
             'week' => Booking::WEEKDAY]);
     }
 
-    public function isBookingValid(BookingRepository $repository, Booking $booking)
+    public function isBookingValid(BookingRepository $repository, Booking $booking, $edit)
     {
         if ($booking->isTimeSlotValid()) {
             $res = true;
@@ -110,25 +127,28 @@ class BookingController extends AbstractController
          * Sinon si date debut >= date de fin good
          *
          */
-        $existingBooking = $repository->findExistingBooking($booking);
+        $existingBooking = $repository->findExistingBooking($booking, $edit);
         $resTimeSlot = true;
+
         /**
          * @var Booking $book
          */
         foreach ($existingBooking as $book)
         {
+            //si date debut NewResa inferieur  a  date debut existingResa
            if($booking->getStartDate()->format('H:i') < $book->getStartDate()->format('H:i')){
+               //si date fin NewResa inferieur  a date debut existingResa
                if ($booking->getEndDate()->format('H:i')<= $book->getStartDate()->format('H:i')){
                    $resTimeSlot = true;
                } else {
-                   $resTimeSlot = false;
-                   $this->addFlash('error','Veuillez selectionner un autre creneau ou choisir un autre poste que :<b>'.$booking->getComputer()->getLabel().'</b> !');
+                   $this->addFlash('error','Le creaneau horaire suivant '.$book->getStartDate()->format('H:i').' - '.$book->getEndDate()->format('H:i').' est déjà pris pour le poste suivant : '.$booking->getComputer()->getLabel().' !' );
+                    return false;
                }
-           } elseif (($booking->getStartDate()->format('H:i') >= $book->getEndDate()->format('H:i')))
+           } elseif (($booking->getStartDate()->format('H:i') >= $book->getEndDate()->format('H:i'))){
                $resTimeSlot = true;
-           else{
-               $resTimeSlot = false;
-               $this->addFlash('error','Veuillez selectionner un autre creneau ou choisir un autre poste que :<b>'.$booking->getComputer()->getLabel().'</b> !' );
+           } else{
+               $this->addFlash('error','Le creaneau horaire suivant '.$book->getStartDate()->format('H:i').' - '.$book->getEndDate()->format('H:i').' est déjà pris pour le poste suivant : '.$booking->getComputer()->getLabel().' !' );
+               return false;
            }
         }
 

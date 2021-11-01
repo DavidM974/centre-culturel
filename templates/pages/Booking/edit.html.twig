@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title 'Edition DES RESERVATIONS' %}
         {% block stylesheets %}
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         {% endblock %}
 
@@ -11,14 +11,15 @@
         <div class="col-lg-12 text-center mx-auto">
             <h1>Edition d'une reservation</h1>
             <p>&nbsp;</p>
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
         </div>
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-danger">{{ message }}</div>
-        {% endfor %}
+
         <div class="col-lg-6 mx-auto">
             {{ form_start(form) }}
             {{ form_widget(form) }}
-            <button class="btn btn-primary">Créer</button>
+            <button class="btn btn-primary">Editer</button>
             {{ form_end(form) }}
         </div>
         <div class="col-lg-6 mx-auto">

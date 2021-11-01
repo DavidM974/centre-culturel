@@ -17,8 +17,10 @@ class HomeController extends AbstractController
      */
     public function index():Response
     {
+        $dtNow = new \DateTime();
         return $this->render('pages/home.html.twig',[
-            'current_menu' => 'home'
+            'current_menu' => 'home',
+            'current_time'=> $dtNow->format('d:m:Y H:i')
         ]);
     }
 }
